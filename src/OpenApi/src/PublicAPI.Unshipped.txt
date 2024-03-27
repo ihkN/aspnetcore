@@ -1,1 +1,29 @@
 #nullable enable
+Microsoft.AspNetCore.OpenApi.IOpenApiDocumentTransformer
+Microsoft.AspNetCore.OpenApi.IOpenApiDocumentTransformer.Transform(Microsoft.OpenApi.Models.OpenApiDocument! document, Microsoft.AspNetCore.OpenApi.OpenApiDocumentTransformerContext! context, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task!
+Microsoft.AspNetCore.OpenApi.OpenApiDocumentTransformerContext
+Microsoft.AspNetCore.OpenApi.OpenApiDocumentTransformerContext.ApplicationServices.get -> System.IServiceProvider!
+Microsoft.AspNetCore.OpenApi.OpenApiDocumentTransformerContext.ApplicationServices.init -> void
+Microsoft.AspNetCore.OpenApi.OpenApiDocumentTransformerContext.DescriptionGroups.get -> System.Collections.Generic.IReadOnlyList<Microsoft.AspNetCore.Mvc.ApiExplorer.ApiDescriptionGroup!>!
+Microsoft.AspNetCore.OpenApi.OpenApiDocumentTransformerContext.DescriptionGroups.init -> void
+Microsoft.AspNetCore.OpenApi.OpenApiDocumentTransformerContext.DocumentName.get -> string!
+Microsoft.AspNetCore.OpenApi.OpenApiDocumentTransformerContext.DocumentName.init -> void
+Microsoft.AspNetCore.OpenApi.OpenApiDocumentTransformerContext.OpenApiDocumentTransformerContext() -> void
+Microsoft.AspNetCore.OpenApi.OpenApiOperationTransformerContext
+Microsoft.AspNetCore.OpenApi.OpenApiOperationTransformerContext.ApplicationServices.get -> System.IServiceProvider!
+Microsoft.AspNetCore.OpenApi.OpenApiOperationTransformerContext.ApplicationServices.init -> void
+Microsoft.AspNetCore.OpenApi.OpenApiOperationTransformerContext.Description.get -> Microsoft.AspNetCore.Mvc.ApiExplorer.ApiDescription!
+Microsoft.AspNetCore.OpenApi.OpenApiOperationTransformerContext.Description.init -> void
+Microsoft.AspNetCore.OpenApi.OpenApiOperationTransformerContext.DocumentName.get -> string!
+Microsoft.AspNetCore.OpenApi.OpenApiOperationTransformerContext.DocumentName.init -> void
+Microsoft.AspNetCore.OpenApi.OpenApiOperationTransformerContext.OpenApiOperationTransformerContext() -> void
+Microsoft.AspNetCore.OpenApi.OpenApiSchemaTransformerContext
+Microsoft.AspNetCore.OpenApi.OpenApiSchemaTransformerContext.ApplicationServices.get -> System.IServiceProvider!
+Microsoft.AspNetCore.OpenApi.OpenApiSchemaTransformerContext.ApplicationServices.init -> void
+Microsoft.AspNetCore.OpenApi.OpenApiSchemaTransformerContext.DocumentName.get -> string!
+Microsoft.AspNetCore.OpenApi.OpenApiSchemaTransformerContext.DocumentName.init -> void
+Microsoft.AspNetCore.OpenApi.OpenApiSchemaTransformerContext.OpenApiSchemaTransformerContext() -> void
+Microsoft.AspNetCore.OpenApi.OpenApiSchemaTransformerContext.ParameterDescription.get -> Microsoft.AspNetCore.Mvc.ApiExplorer.ApiParameterDescription?
+Microsoft.AspNetCore.OpenApi.OpenApiSchemaTransformerContext.ParameterDescription.init -> void
+Microsoft.AspNetCore.OpenApi.OpenApiSchemaTransformerContext.Type.get -> System.Type!
+Microsoft.AspNetCore.OpenApi.OpenApiSchemaTransformerContext.Type.init -> void
