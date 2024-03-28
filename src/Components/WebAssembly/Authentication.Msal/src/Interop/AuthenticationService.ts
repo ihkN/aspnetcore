@@ -43,7 +43,7 @@ interface AuthorizeService {
     completeSignOut(url: string): Promise<AuthenticationResult>;
 }
 
-// These are the values for the .NET logger LogLevel. 
+// These are the values for the .NET logger LogLevel.
 // We only use debug and trace
 export enum LogLevel {
     Trace = 0,
@@ -71,7 +71,7 @@ export class Logger {
                 // Logs in the following format to keep consistency with the way ASP.NET Core logs to the console while avoiding the
                 // additional overhead of passing the logger as a JSObjectReference
                 // dbug: Microsoft.AspNetCore.Components.WebAssembly.Authentication.RemoteAuthenticationService[0]
-                //       <<message>>         
+                //       <<message>>
                 // trce: Microsoft.AspNetCore.Components.WebAssembly.Authentication.RemoteAuthenticationService[0]
                 //       <<message>>
                 `${levelString}: Microsoft.AspNetCore.Components.WebAssembly.Authentication.RemoteAuthenticationService[0]
@@ -279,12 +279,12 @@ class MsalAuthorizeService implements AuthorizeService {
 
     private async signInWithPopup(request: Msal.PopupRequest) {
         try {
-            this.debug('Starting sign-in pop-up');
+            this.debug('Starting sign-in pop-up.');
             return await this._msalApplication.loginPopup(request);
         } catch (e) {
             // If the user explicitly cancelled the pop-up, avoid performing a redirect.
             if (this.isMsalError(e) && e.errorCode !== Msal.BrowserAuthErrorMessage.userCancelledError.code) {
-                this.debug('User canceled sign-in pop-up');
+                this.debug('User canceled sign-in pop-up.');
                 this.signInWithRedirect(request);
             } else {
                 this.debug(`Sign-in pop-up failed: '${(e as Error).message}'.`);
@@ -327,12 +327,59 @@ class MsalAuthorizeService implements AuthorizeService {
             };
             this.trace('signOut-Request', request);
 
-            await this._msalApplication.logoutRedirect(request);
+            const result = await this.signOutCore(request);
+            this.trace('signOut-Response', result);
+            if (!result) {
+                return this.redirect();
+            } else if (this.isMsalError(result)) {
+                return this.error(result.errorMessage);
+            }
 
-            // We are about to be redirected.
-            return this.redirect();
+            return this.success(state);
         } catch (e) {
+            const message = (e as Error).message;
+            this.debug(`Sign out error '${message}'`);
             return this.error((e as Error).message);
+        }
+    }
+
+    async signOutCore(request: Partial<Msal.EndSessionRequest>) : Promise<Msal.AuthenticationResult | Msal.AuthError | undefined> {
+        this.trace('signOut-Request', request);
+        const loginMode = this._settings.loginMode.toLowerCase();
+        // shouldn't both calls await?
+        if (loginMode == 'redirect') {
+            return this.signOutWithRedirect(request as Msal.EndSessionRequest);
+        } else {
+            return this.signOutWithPopup(request as Msal.EndSessionPopupRequest);
+        }
+    }
+
+    private async signOutWithRedirect(request: Msal.EndSessionRequest) {
+        try {
+            this.debug('Starting sign-out redirect.');
+            return await this._msalApplication.logoutRedirect(request)
+        } catch (e) {
+            this.debug(`Sing-out redirect failed: '${(e as Error).message}'`)
+            return e as any;
+        }
+    }
+
+    private async signOutWithPopup(request: Msal.EndSessionPopupRequest) {
+        try {
+            this.debug('Starting sign-out pop-up.');
+            return await this._msalApplication.logoutPopup(request);
+        }
+        catch (e) {
+            // If the user explicitly cancelled the pop-up, avoid performing a redirect.
+            if (this.isMsalError(e) && e.errorCode !== Msal.BrowserAuthErrorMessage.userCancelledError.code) {
+                this.debug("User cancelled sign-out pop-up.");
+                // shouldn't we await here? as well in signInWithPopup's fallback.
+                this.signOutWithRedirect(request);
+            }
+            else {
+                this.debug(`Sign-out pop-up failed: '${(e as Error).message}'`);
+                return e as any;
+            }
         }
     }
 
